@@ -1,0 +1,154 @@
+server:
+  # HTTP/2 in Spring Boot. With TLS, browsers negotiate h2; for service-to-service
+  # behind a TLS-terminating load balancer, the loopback hop typically uses h2c
+  # (17.2). Enabling this flips multiplexing on without code changes.
+  http2:
+    enabled: true
+  compression:
+    enabled: true
+    # Brotli isn't supported by stock Tomcat — gzip is the right default for
+    # JSON on the hot path (17.5). Mime-types target the largest wins.
+    mime-types: application/json,application/xml,text/html,text/plain,text/css,application/javascript
+    # Below this threshold gzip costs more CPU than the bytes it saves.
+    min-response-size: 1024
+  tomcat:
+    threads:
+      # With virtual threads enabled (chapter 11), the platform-thread pool
+      # only carries virtual threads. Keep it small — sized to ~2× core count.
+      max: 16
+      min-spare: 4
+    # accept-count + max defines how much load Tomcat will absorb before
+    # rejecting new connections at the OS level. Larger queues hide saturation;
+    # 100 is the chapter 25 sweet-spot for this service.
+    accept-count: 100
+    connection-timeout: 5000
+
+spring:
+  threads:
+    virtual:
+      # Enables virtual threads for the embedded Tomcat connector, @Async
+      # executors, and the scheduler. With this flag, every request runs on a
+      # virtual thread carried by a small pool of platform threads — measured
+      # against the chapter-01 baseline this lifts throughput on I/O-bound
+      # endpoints by ~2-3× without changing application code.
+      enabled: true
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/cinetrack}
+    username: ${DB_USER:cinetrack}
+    password: ${DB_PASS:cinetrack}
+    hikari:
+      # Pool sizing formula from 13.3:
+      #   connections = ((cores × 2) + effective_spindle_count)
+      # For an 8-core node + 1 SSD: 17. We round to 16 to match a power of two
+      # and to keep a clean ratio against the 16-thread Tomcat pool from chapter 12.
+      # Important: bigger is NOT better — see 13.4 for the latency curve.
+      maximum-pool-size: 16
+      minimum-idle: 4
+      # Fail-fast on saturation rather than queue requests indefinitely. Combined
+      # with HikariCP's queue, this surfaces saturation as 5xx instead of timeouts.
+      connection-timeout: 3000
+      # Trip a stack-trace log if a connection is held longer than 30s — by far
+      # the most useful HikariCP knob for debugging slow queries (13.5).
+      leak-detection-threshold: 30000
+      idle-timeout: 600000
+      # Keep below the DB-side wait_timeout (8 hours by default in Postgres) so
+      # the pool recycles connections before the server kills them.
+      max-lifetime: 1800000
+      keepalive-time: 30000
+      pool-name: CineTrackPool
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        # Global batch fetch size — Hibernate uses this for any lazy association
+        # without an explicit @BatchSize. 50 matches the CinéTrack page size (20.5).
+        default_batch_fetch_size: 50
+        # JDBC batch size for inserts/updates. Combined with order_inserts and
+        # order_updates, this lets Hibernate group statements per entity type
+        # and ship them in one round-trip (20.7).
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+        # Enable statistics — required for slow-query log and N+1 detection (20.2).
+        # Wire to a Micrometer binder so hit/miss counts feed the Prometheus dash.
+        generate_statistics: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  cache:
+    type: caffeine
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USER:}
+    password: ${MAIL_PASS:}
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,caches
+  endpoint:
+    health:
+      show-details: when-authorized
+  metrics:
+    tags:
+      application: cinetrack
+    distribution:
+      # Publish percentile-buckets so Prometheus can compute aggregated quantiles
+      # over rolling windows (avoids the "averages of percentiles" trap covered in 2.6).
+      percentiles-histogram:
+        http.server.requests: true
+        cinetrack.tmdb.lookup: true
+      # Per-meter SLO buckets — make these align with your actual latency budgets.
+      slo:
+        http.server.requests: 50ms,100ms,200ms,500ms,1s
+        cinetrack.tmdb.lookup: 50ms,100ms,250ms,500ms,1s,2s
+      # Client-side percentiles for dashboards that don't aggregate across instances.
+      percentiles:
+        http.server.requests: 0.5, 0.95, 0.99
+        cinetrack.tmdb.lookup: 0.5, 0.95, 0.99
+
+jwt:
+  # Set JWT_SECRET environment variable (minimum 256-bit entropy, base64-encoded)
+  secret: ${JWT_SECRET}
+  expiration-ms: 86400000
+
+tmdb:
+  base-url: ${TMDB_BASE_URL:https://api.themoviedb.org/3}
+  api-key: ${TMDB_API_KEY:}
+
+rate-limit:
+  capacity: 100
+  refill-tokens: 100
+  refill-period-seconds: 60
+
+# Chapter 22 — read-replica routing. Off by default; flip cinetrack.read-replica.enabled=true
+# in environments where a replica DSN is available. AbstractRoutingDataSource sends
+# @Transactional(readOnly=true) work to the replica, everything else to the primary.
+cinetrack:
+  read-replica:
+    enabled: false
+    datasource:
+      jdbc-url: ${REPLICA_DB_URL:jdbc:postgresql://localhost:5433/cinetrack}
+      username: ${REPLICA_DB_USER:cinetrack}
+      password: ${REPLICA_DB_PASS:cinetrack}
+      maximum-pool-size: 16
+      minimum-idle: 4
+      connection-timeout: 3000
+      pool-name: CineTrackReplicaPool

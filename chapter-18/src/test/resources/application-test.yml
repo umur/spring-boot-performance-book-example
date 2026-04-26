@@ -1,0 +1,58 @@
+tmdb:
+  api-key: test-key
+  base-url: http://localhost:9999
+  connect-timeout-ms: 1000
+  read-timeout-ms: 1000
+
+# Datasource and Redis are overridden at runtime by @DynamicPropertySource in
+# integration tests. The values below serve unit tests that skip containers.
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  flyway:
+    enabled: false
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  cache:
+    type: caffeine
+  mail:
+    host: localhost
+    port: 1025
+    username: ""
+    password: ""
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+jwt:
+  secret: dGVzdC1zZWNyZXQta2V5LXRoYXQtaXMtYXQtbGVhc3QtMjU2LWJpdHMtbG9uZw==
+  expiration-ms: 3600000
+
+rate-limit:
+  capacity: 5
+  refill-tokens: 5
+  refill-period-seconds: 60
+
+logging:
+  level:
+    com.cinetrack: DEBUG
+    org.springframework.security: WARN
