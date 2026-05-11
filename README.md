@@ -1,6 +1,6 @@
 # Spring Boot 4 Performance in Practice
 
-> CinéTrack from a 200 RPS baseline to 50× throughput — 28 chapters of measurement-driven tuning.
+> CinéTrack from a 200 RPS baseline to 50× throughput: 28 chapters of measurement-driven tuning.
 
 ![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white) ![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0-6DB33F?logo=spring&logoColor=white) ![GraalVM](https://img.shields.io/badge/GraalVM-native-E85027) ![License: MIT](https://img.shields.io/badge/License%3A_MIT-MIT-blue)
 
@@ -8,7 +8,7 @@ Companion code for the book **Spring Boot 4 Performance in Practice** by [Umur I
 
 ## About the book
 
-A measurement-driven performance book. We start with a Spring Boot 4 monolith — **CinéTrack** — failing its p99 SLO at 200 RPS, and across 28 chapters we use JFR, async-profiler, JVM tuning (G1, ZGC, generational ZGC), virtual threads, structured concurrency, connection pool tuning, HTTP/2, JIT and reachability metadata, native AOT with GraalVM, queueing theory, and capacity planning to get the same service to 50× the throughput on the same hardware. Every chapter ends with numbers.
+A measurement-driven performance book. We start with a Spring Boot 4 monolith. **CinéTrack**. Failing its p99 SLO at 200 RPS, and across 28 chapters we use JFR, async-profiler, JVM tuning (G1, ZGC, generational ZGC), virtual threads, structured concurrency, connection pool tuning, HTTP/2, JIT and reachability metadata, native AOT with GraalVM, queueing theory, and capacity planning to get the same service to 50× the throughput on the same hardware. Every chapter ends with numbers.
 
 ## Prerequisites
 
@@ -32,8 +32,8 @@ mvn spring-boot:run
 
 One self-contained Spring Boot project per chapter:
 
-- `chapter-01/ … chapter-28/` — cumulative CinéTrack state at the end of each chapter, with the chapter's JVM configuration, profiling scripts, k6 load profile, and benchmark results
-- `final/` — the complete tuned application with the full benchmark suite
+- `chapter-01/ … chapter-28/`: cumulative CinéTrack state at the end of each chapter, with the chapter's JVM configuration, profiling scripts, k6 load profile, and benchmark results
+- `final/`: the complete tuned application with the full benchmark suite
 
 ## Stack
 
@@ -55,4 +55,4 @@ I'm Umur Inan. I write books about Spring Boot, Java, distributed systems, and t
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).
