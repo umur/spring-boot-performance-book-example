@@ -1,4 +1,4 @@
-# chapter-04 — async-profiler and reading flame graphs correctly
+# chapter-04: async-profiler and reading flame graphs correctly
 
 This chapter snapshot is the baseline CinéTrack application used by the chapter.
 The chapter's value is in the JVM/profiling/runtime configuration and the

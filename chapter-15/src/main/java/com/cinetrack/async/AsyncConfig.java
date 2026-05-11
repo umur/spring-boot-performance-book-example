@@ -28,7 +28,7 @@ public class AsyncConfig implements AsyncConfigurer {
                     method.getName(), ex.getMessage(), ex);
     }
 
-    // Notification email sending — I/O-bound, blocking SMTP.
+    // Notification email sending: I/O-bound, blocking SMTP.
     // Sizing follows 12.6: threads = cores × (1 + wait/compute). SMTP wait/compute
     // is ~10 (mostly network), so 8 cores × 11 ≈ 88, capped at 32 because beyond
     // that the SMTP server itself becomes the bottleneck.
@@ -42,7 +42,7 @@ public class AsyncConfig implements AsyncConfigurer {
         executor.setAllowCoreThreadTimeOut(true);
         executor.setThreadNamePrefix("notification-");
         // CallerRunsPolicy turns the caller thread into a back-pressure valve when
-        // the queue saturates — without this, overflow silently drops emails.
+        // the queue saturates: without this, overflow silently drops emails.
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.initialize();
         return executor;

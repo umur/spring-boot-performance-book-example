@@ -39,7 +39,7 @@ public interface WatchLogRepository extends JpaRepository<WatchLog, Long> {
     // shows a Sort node spilling to disk for users with >10K logs (19.6).
     // Rewriting as a LIMIT'd query lets Postgres use the
     // (user_id, rating DESC, watched_date DESC) composite index added in
-    // chapter 21 and skip the sort entirely — Bitmap Heap Scan + Index Scan,
+    // chapter 21 and skip the sort entirely: Bitmap Heap Scan + Index Scan,
     // no Sort node.
     @Query("""
             SELECT w FROM WatchLog w

@@ -6,7 +6,7 @@ server:
     enabled: true
   compression:
     enabled: true
-    # Brotli isn't supported by stock Tomcat — gzip is the right default for
+    # Brotli isn't supported by stock Tomcat: gzip is the right default for
     # JSON on the hot path (17.5). Mime-types target the largest wins.
     mime-types: application/json,application/xml,text/html,text/plain,text/css,application/javascript
     # Below this threshold gzip costs more CPU than the bytes it saves.
@@ -14,7 +14,7 @@ server:
   tomcat:
     threads:
       # With virtual threads enabled (chapter 11), the platform-thread pool
-      # only carries virtual threads. Keep it small — sized to ~2× core count.
+      # only carries virtual threads. Keep it small: sized to ~2× core count.
       max: 16
       min-spare: 4
     # accept-count + max defines how much load Tomcat will absorb before
@@ -28,7 +28,7 @@ spring:
     virtual:
       # Enables virtual threads for the embedded Tomcat connector, @Async
       # executors, and the scheduler. With this flag, every request runs on a
-      # virtual thread carried by a small pool of platform threads — measured
+      # virtual thread carried by a small pool of platform threads: measured
       # against the chapter-01 baseline this lifts throughput on I/O-bound
       # endpoints by ~2-3× without changing application code.
       enabled: true
@@ -41,13 +41,13 @@ spring:
       #   connections = ((cores × 2) + effective_spindle_count)
       # For an 8-core node + 1 SSD: 17. We round to 16 to match a power of two
       # and to keep a clean ratio against the 16-thread Tomcat pool from chapter 12.
-      # Important: bigger is NOT better — see 13.4 for the latency curve.
+      # Important: bigger is NOT better: see 13.4 for the latency curve.
       maximum-pool-size: 16
       minimum-idle: 4
       # Fail-fast on saturation rather than queue requests indefinitely. Combined
       # with HikariCP's queue, this surfaces saturation as 5xx instead of timeouts.
       connection-timeout: 3000
-      # Trip a stack-trace log if a connection is held longer than 30s — by far
+      # Trip a stack-trace log if a connection is held longer than 30s: by far
       # the most useful HikariCP knob for debugging slow queries (13.5).
       leak-detection-threshold: 30000
       idle-timeout: 600000
@@ -64,7 +64,7 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        # Global batch fetch size — Hibernate uses this for any lazy association
+        # Global batch fetch size: Hibernate uses this for any lazy association
         # without an explicit @BatchSize. 50 matches the CinéTrack page size (20.5).
         default_batch_fetch_size: 50
         # JDBC batch size for inserts/updates. Combined with order_inserts and
@@ -74,7 +74,7 @@ spring:
           batch_size: 50
         order_inserts: true
         order_updates: true
-        # Enable statistics — required for slow-query log and N+1 detection (20.2).
+        # Enable statistics: required for slow-query log and N+1 detection (20.2).
         # Wire to a Micrometer binder so hit/miss counts feed the Prometheus dash.
         generate_statistics: true
   flyway:
@@ -115,7 +115,7 @@ management:
       percentiles-histogram:
         http.server.requests: true
         cinetrack.tmdb.lookup: true
-      # Per-meter SLO buckets — make these align with your actual latency budgets.
+      # Per-meter SLO buckets: make these align with your actual latency budgets.
       slo:
         http.server.requests: 50ms,100ms,200ms,500ms,1s
         cinetrack.tmdb.lookup: 50ms,100ms,250ms,500ms,1s,2s

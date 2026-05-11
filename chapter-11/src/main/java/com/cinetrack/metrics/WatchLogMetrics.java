@@ -27,7 +27,7 @@ public class WatchLogMetrics {
                 .tag("reason", "duplicate")
                 .register(registry);
 
-        // Histogram-publishing timer — exposes per-bucket counts so Prometheus
+        // Histogram-publishing timer: exposes per-bucket counts so Prometheus
         // can compute aggregated quantiles across instances without coordinated
         // omission. SLO buckets target the latency budget defined in chapter 1.
         this.tmdbLookupTimer = Timer.builder("cinetrack.tmdb.lookup")

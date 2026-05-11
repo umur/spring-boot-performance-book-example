@@ -1,4 +1,4 @@
-# Chapter 1 — Baseline CinéTrack
+# Chapter 1: Baseline CinéTrack
 
 The chapter-1 baseline **is the final state of CinéTrack from *Spring Boot 4 in Practice*.** To keep code single-source, this directory does not duplicate it.
 

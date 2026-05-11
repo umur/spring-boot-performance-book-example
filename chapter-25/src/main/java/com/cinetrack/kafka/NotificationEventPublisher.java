@@ -23,7 +23,7 @@ public class NotificationEventPublisher {
     private String notificationsTopic;
 
     // Returns a future so callers can chain on success/failure without blocking.
-    // Partition key is the userId — keeps per-user events ordered (23.6).
+    // Partition key is the userId: keeps per-user events ordered (23.6).
     public CompletableFuture<?> publishNotification(Long userId, NotificationEvent event) {
         return kafkaTemplate.send(notificationsTopic, String.valueOf(userId), event)
                 .whenComplete((result, ex) -> {

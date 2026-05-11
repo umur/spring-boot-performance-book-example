@@ -1,4 +1,4 @@
-# chapter-25 — Queueing theory: Little's Law and the utilization-latency curve
+# chapter-25: Queueing theory: Little's Law and the utilization-latency curve
 
 This chapter snapshot is the baseline CinéTrack application used by the chapter.
 The chapter's value is in the JVM/profiling/runtime configuration and the

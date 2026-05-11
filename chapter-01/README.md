@@ -1,4 +1,4 @@
-# Chapter 1 — Baseline CinéTrack
+# Chapter 1: Baseline CinéTrack
 
 The starting point for the entire book: the final state of CinéTrack from
 *Spring Boot 4 in Practice* (chapter 16), copied here verbatim and locked
@@ -23,13 +23,13 @@ intercepts TMDB. Current line coverage: **89%**.
 
 ## What chapter 1 measures
 
-Chapter 1 is the only chapter without tuning — it establishes the latency
+Chapter 1 is the only chapter without tuning: it establishes the latency
 histogram and throughput baseline that every later chapter compares against.
 The k6 baseline script lives in `chapter-05/loadtest/k6/baseline.js`.
 
 ## What later chapters do
 
-Each `chapter-NN/` is a **cumulative snapshot** — chapter 11 contains every
+Each `chapter-NN/` is a **cumulative snapshot**: chapter 11 contains every
 chapter 02–06 change plus virtual threads; chapter 22 contains everything up
 to and including read-replica routing. `final/` is the end-state at the close
 of chapter 28, ~50× faster than this baseline.

@@ -1,4 +1,4 @@
-# chapter-28 — CinéTrack at 50×: the final benchmark and retrospective
+# chapter-28: CinéTrack at 50×: the final benchmark and retrospective
 
 This chapter snapshot is the baseline CinéTrack application used by the chapter.
 The chapter's value is in the JVM/profiling/runtime configuration and the

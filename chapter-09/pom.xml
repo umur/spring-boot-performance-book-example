@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.0</version>
+        <version>4.0.6</version>
         <relativePath/>
     </parent>
 
@@ -15,7 +15,7 @@
     <artifactId>cinetrack-chapter-06</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>cinetrack-chapter-06</name>
-    <description>CinéTrack — Chapter 6: Load testing with Gatling</description>
+    <description>CinéTrack: Chapter 6: Load testing with Gatling</description>
 
     <properties>
         <java.version>21</java.version>

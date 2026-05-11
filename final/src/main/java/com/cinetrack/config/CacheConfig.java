@@ -19,14 +19,14 @@ import java.util.concurrent.TimeUnit;
 
 // Two-level cache (16.6): Caffeine L1 in-process, Redis L2 shared across
 // instances. CompositeCacheManager checks L1 first; on miss, the Redis
-// manager handles the lookup. Writes go to L1 first, then L2 — same path,
+// manager handles the lookup. Writes go to L1 first, then L2: same path,
 // just opposite direction. The L1 keeps p99 low for hot keys; the L2 keeps
 // hit rate high across the fleet so a rolling deploy doesn't reset every cache.
 @Configuration
 @Profile("!prod")
 public class CacheConfig {
 
-    // L1 — Caffeine, in-process, small and fast.
+    // L1: Caffeine, in-process, small and fast.
     // Sizes intentionally smaller than chapter 15 because the L2 absorbs misses;
     // we don't need every node to hold every hot entry.
     @Bean
@@ -47,7 +47,7 @@ public class CacheConfig {
         return manager;
     }
 
-    // L2 — Redis, shared across instances, larger and longer-lived.
+    // L2: Redis, shared across instances, larger and longer-lived.
     // Per-cache TTLs differ because the workloads differ (16.4).
     @Bean
     public CacheManager redisL2CacheManager(RedisConnectionFactory connectionFactory) {
@@ -65,7 +65,7 @@ public class CacheConfig {
                 .build();
     }
 
-    // Composite — Spring queries the managers in order, returning the first
+    // Composite: Spring queries the managers in order, returning the first
     // hit. setFallbackToNoOpCache(true) ensures @Cacheable methods that name
     // a cache neither manager knows about don't blow up at runtime.
     @Bean

@@ -1,4 +1,4 @@
-# Chapter 22.6 — PgBouncer in front of HikariCP.
+# Chapter 22.6: PgBouncer in front of HikariCP.
 #
 # PgBouncer multiplexes many short-lived application connections onto a small
 # pool of long-lived Postgres backends. With this setup, the Spring Boot pool
@@ -28,11 +28,11 @@ services:
       DB_USER: cinetrack
       DB_PASSWORD: cinetrack
       DB_NAME: cinetrack
-      # Transaction mode — connection is returned to the pool at the end of
+      # Transaction mode: connection is returned to the pool at the end of
       # every transaction, not at the end of the session. Trade-off: prepared
       # statements and SET LOCAL don't work in transaction mode (22.6).
       POOL_MODE: transaction
-      # Server-side pool size — what PgBouncer keeps open against Postgres.
+      # Server-side pool size: what PgBouncer keeps open against Postgres.
       # Small intentionally; this is the ceiling for true concurrent queries.
       DEFAULT_POOL_SIZE: 25
       MAX_CLIENT_CONN: 1000

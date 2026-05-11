@@ -1,4 +1,4 @@
-# chapter-03 — Java Flight Recorder in anger
+# chapter-03: Java Flight Recorder in anger
 
 This chapter snapshot is the baseline CinéTrack application used by the chapter.
 The chapter's value is in the JVM/profiling/runtime configuration and the

@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.0</version>
+        <version>4.0.6</version>
         <relativePath/>
     </parent>
 
@@ -15,7 +15,7 @@
     <artifactId>cinetrack-chapter-05</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>cinetrack-chapter-05</name>
-    <description>CinéTrack — Chapter 5: Load testing with k6</description>
+    <description>CinéTrack: Chapter 5: Load testing with k6</description>
 
     <properties>
         <java.version>21</java.version>

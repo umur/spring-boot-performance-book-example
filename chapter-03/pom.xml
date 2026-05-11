@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.0</version>
+        <version>4.0.6</version>
         <relativePath/>
     </parent>
 
@@ -15,7 +15,7 @@
     <artifactId>cinetrack-chapter-02</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>cinetrack-chapter-02</name>
-    <description>CinéTrack — Chapter 2: Micrometer timers and histograms for Spring Boot 4 Performance in Practice</description>
+    <description>CinéTrack: Chapter 2: Micrometer timers and histograms for Spring Boot 4 Performance in Practice</description>
 
     <properties>
         <java.version>21</java.version>

@@ -56,7 +56,7 @@ management:
       percentiles-histogram:
         http.server.requests: true
         cinetrack.tmdb.lookup: true
-      # Per-meter SLO buckets — make these align with your actual latency budgets.
+      # Per-meter SLO buckets: make these align with your actual latency budgets.
       slo:
         http.server.requests: 50ms,100ms,200ms,500ms,1s
         cinetrack.tmdb.lookup: 50ms,100ms,250ms,500ms,1s,2s

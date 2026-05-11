@@ -1,4 +1,4 @@
-# chapter-07 — Garbage collectors in Java 21: G1 vs ZGC
+# chapter-07: Garbage collectors in Java 21: G1 vs ZGC
 
 This chapter snapshot is the baseline CinéTrack application used by the chapter.
 The chapter's value is in the JVM/profiling/runtime configuration and the

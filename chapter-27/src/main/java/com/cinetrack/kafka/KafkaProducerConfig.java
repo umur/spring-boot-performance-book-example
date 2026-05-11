@@ -13,7 +13,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import java.util.HashMap;
 import java.util.Map;
 
-// Chapter 23 — throughput-tuned Kafka producer for CinéTrack notifications.
+// Chapter 23: throughput-tuned Kafka producer for CinéTrack notifications.
 // The settings follow the chapter-23 walk-through: batch.size + linger.ms,
 // compression, idempotence, acks=all. The defaults Kafka ships with are
 // latency-optimized; for an event stream like notifications we'd rather pay
@@ -33,7 +33,7 @@ public class KafkaProducerConfig {
 
         // Throughput levers (23.3, 23.4, 23.5):
         //   linger.ms=20 buys time for the batcher to coalesce records.
-        //   batch.size=64KB caps each batch — bigger isn't always better.
+        //   batch.size=64KB caps each batch: bigger isn't always better.
         //   compression=lz4 is the throughput sweet-spot for JSON payloads.
         //   acks=all + enable.idempotence=true gives exactly-once semantics
         //   without the historical throughput cliff (23.5).
@@ -43,7 +43,7 @@ public class KafkaProducerConfig {
         props.put(ProducerConfig.ACKS_CONFIG, "all");
         props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
         props.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, 5);
-        // Buffer memory — when this fills, send() blocks. 64MB is enough for a
+        // Buffer memory: when this fills, send() blocks. 64MB is enough for a
         // few seconds of bursts at 100 MB/s without back-pressuring callers.
         props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 64L * 1024 * 1024);
         // Retries are bounded by delivery.timeout.ms; idempotence makes them safe.

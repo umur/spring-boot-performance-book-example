@@ -1,4 +1,4 @@
-# chapter-26 — Capacity planning and cost per request
+# chapter-26: Capacity planning and cost per request
 
 This chapter snapshot is the baseline CinéTrack application used by the chapter.
 The chapter's value is in the JVM/profiling/runtime configuration and the

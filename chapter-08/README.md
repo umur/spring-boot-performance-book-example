@@ -1,4 +1,4 @@
-# chapter-08 — Heap sizing, region sizing, and pause budgets
+# chapter-08: Heap sizing, region sizing, and pause budgets
 
 This chapter snapshot is the baseline CinéTrack application used by the chapter.
 The chapter's value is in the JVM/profiling/runtime configuration and the

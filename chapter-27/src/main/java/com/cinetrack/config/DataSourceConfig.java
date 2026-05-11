@@ -16,7 +16,7 @@ import java.util.Map;
 
 // Read-replica routing for Spring Boot (chapter 22.7). @Transactional(readOnly=true)
 // methods are routed to the replica; everything else hits the primary. The
-// LazyConnectionDataSourceProxy wrap is critical — without it, Spring acquires
+// LazyConnectionDataSourceProxy wrap is critical: without it, Spring acquires
 // a connection at transaction start before the routing key is available.
 @Configuration
 @ConditionalOnProperty(name = "cinetrack.read-replica.enabled", havingValue = "true")
@@ -56,7 +56,7 @@ public class DataSourceConfig {
 
         // LazyConnectionDataSourceProxy defers acquiring a connection until the
         // first JDBC call. Without it, Spring grabs the connection at @Transactional
-        // entry — which happens before isCurrentTransactionReadOnly() is set.
+        // entry: which happens before isCurrentTransactionReadOnly() is set.
         return new LazyConnectionDataSourceProxy(routing);
     }
 }
