@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Human-readable console output for local development.
+         Includes the correlationId from MDC when present. -->
+    <springProfile name="local,dev">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level [%X{correlationId}] %logger{36} - %msg%n</pattern>
+            </encoder>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+        <logger name="com.cinetrack" level="DEBUG"/>
+    </springProfile>
+
+    <!-- Structured JSON output for production.
+         Every field from MDC (correlationId, etc.) is included automatically
+         by LogstashEncoder, which makes log aggregation in Loki or Elasticsearch easy. -->
+    <springProfile name="prod">
+        <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                <includeCallerData>false</includeCallerData>
+            </encoder>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="JSON"/>
+        </root>
+    </springProfile>
+
+</configuration>
